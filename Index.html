@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Translator</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f4f7fb;
+    text-align: center;
+}
+
+header {
+    background: #243b55;
+    color: white;
+    padding: 25px;
+}
+
+.container {
+    max-width: 600px;
+    margin: 25px auto;
+    padding: 20px;
+}
+
+.camera-box {
+    background: black;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+video {
+    width: 100%;
+    display: block;
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 10px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.start {
+    background: #243b55;
+    color: white;
+}
+
+.stop {
+    background: #d9534f;
+    color: white;
+}
+
+.result {
+    background: white;
+    margin-top: 25px;
+    padding: 25px;
+    border-radius: 15px;
+}
+
+#translation {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🤟 Sign Translator</h1>
+<p>Translate Sign Language into Text</p>
+</header>
+
+<div class="container">
+
+<div class="camera-box">
+<video id="camera" autoplay playsinline></video>
+</div>
+
+<button class="start" onclick="startCamera()">
+📷 Start Camera
+</button>
+
+<button class="stop" onclick="stopCamera()">
+⛔ Stop Camera
+</button>
+
+<div class="result">
+<h2>Translation</h2>
+
+<div id="translation">
+Show a hand sign
+</div>
+
+<p id="status">
+Camera is not started
+</p>
+</div>
+
+</div>
+
+<script>
+
+let stream = null;
+
+async function startCamera() {
+    try {
+        stream = await navigator.mediaDevices.getUserMedia({
+            video: true
+        });
+
+        document.getElementById("camera").srcObject = stream;
+
+        document.getElementById("status").innerText =
+        "Camera is active. Show a hand sign.";
+
+    } catch (error) {
+        document.getElementById("status").innerText =
+        "Camera permission was not given.";
+    }
+}
+
+function stopCamera() {
+
+    if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+
+        document.getElementById("camera").srcObject = null;
+
+        document.getElementById("status").innerText =
+        "Camera stopped.";
+    }
+}
+
+</script>
+
+</body>
+</html>
