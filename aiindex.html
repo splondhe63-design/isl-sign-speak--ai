@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sign Translator</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f7fb;
+    color: #222;
+}
+
+header {
+    background: #243b55;
+    color: white;
+    text-align: center;
+    padding: 25px 15px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 30px;
+}
+
+header p {
+    margin: 8px 0 0;
+}
+
+.container {
+    max-width: 600px;
+    margin: 25px auto;
+    padding: 20px;
+}
+
+.camera-box {
+    background: black;
+    border-radius: 15px;
+    overflow: hidden;
+    width: 100%;
+}
+
+video {
+    width: 100%;
+    display: block;
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 10px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.start {
+    background: #243b55;
+    color: white;
+}
+
+.stop {
+    background: #d9534f;
+    color: white;
+}
+
+.result {
+    background: white;
+    margin-top: 25px;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.result h2 {
+    margin-top: 0;
+    color: #243b55;
+}
+
+#translation {
+    font-size: 30px;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+.info {
+    margin-top: 20px;
+    background: #fff;
+    padding: 18px;
+    border-radius: 12px;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🤟 Sign Translator</h1>
+    <p>Translate Sign Language into Text</p>
+</header>
+
+<div class="container">
+
+    <div class="camera-box">
+        <video id="camera" autoplay playsinline></video>
+    </div>
+
+    <button class="start" onclick="startCamera()">
+        📷 Start Camera
+    </button>
+
+    <button class="stop" onclick="stopCamera()">
+        ⛔ Stop Camera
+    </button>
+
+    <div class="result">
+        <h2>Translation</h2>
+
+        <div id="translation">
+            Show a hand sign
+        </div>
+
+        <p id="status">
+            Camera is not started
+        </p>
+    </div>
+
+    <div class="info">
+        <h3>How to use</h3>
+
+        <ol>
+            <li>Click Start Camera.</li>
+            <li>Allow camera permission.</li>
+            <li>Show your hand sign in front of the camera.</li>
+            <li>The detected sign will appear here.</li>
+        </ol>
+    </div>
+
+</div>
+
+<footer>
+    Sign Translator App • 2026
+</footer>
+
+<script>
+
+let stream = null;
+
+async function startCamera() {
+
+    try {
+
+        stream = await navigator.mediaDevices.getUserMedia({
+            video: true
+        });
+
+        document.getElementById("camera").srcObject = stream;
+
+        document.getElementById("status").innerText =
+            "Camera is active. Show a hand sign.";
+
+    } catch (error) {
+
+        document.getElementById("status").innerText =
+            "Camera permission was not given.";
+
+    }
+}
+
+function stopCamera() {
+
+    if (stream) {
+
+        stream.getTracks().forEach(track => track.stop());
+
+        document.getElementById("camera").srcObject = null;
+
+        document.getElementById("status").innerText =
+            "Camera stopped.";
+    }
+}
+
+</script>
+
+</body>
+</html>
